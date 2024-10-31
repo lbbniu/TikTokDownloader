@@ -331,7 +331,8 @@ class TikTokDownloader:
         await self.check_settings(False, )
         self.check_update()
         if await self.disclaimer():
-            await self.main_menu(safe_pop(self.default_mode))
+            await self.complete()
+            # await self.main_menu(safe_pop(self.default_mode))
 
     def delete_cache(self):
         rmtree(self.parameter.cache.resolve())

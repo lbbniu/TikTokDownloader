@@ -4,3 +4,6 @@
 *.xlsx
 *.csv
 *.spec
+__pycache__
+/Download
+*.txt

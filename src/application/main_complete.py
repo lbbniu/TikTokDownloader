@@ -756,11 +756,13 @@ class TikTok:
         async with logger(root, console=self.console, **params) as record:
             while url := self._inquire_input("作品"):
                 ids = await link_obj.run(url)
+                print(ids)
                 if not any(ids):
                     self.logger.warning(f"{url} 提取作品 ID 失败")
                     continue
                 self.console.print(f"共提取到 {len(ids)} 个作品，开始处理！")
                 await self._handle_detail(ids, tiktok, record, )
+                exit(0)
 
     async def __detail_inquire_tiktok(self, record, tiktok=True, ):
         await self.__detail_inquire(tiktok, )
@@ -1678,6 +1680,9 @@ class TikTok:
 
     async def run(self, default_mode: list):
         self.default_mode = default_mode
+        await self.detail_interactive()
+        #await self.__detail_inquire()
+        return
         while self.running:
             if not (select := safe_pop(self.default_mode)):
                 select = choose(
