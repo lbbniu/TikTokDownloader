@@ -230,6 +230,7 @@ class TikTok:
         self.console.print("该功能暂不开放！", style=WARNING)
 
     def _inquire_input(self, tip: str = "", problem: str = "", ) -> str:
+        return "https://www.douyin.com/video/6870423037087436046"
         text = self.console.input(problem or f"请输入{tip}链接: ")
         if not text:
             return ""
@@ -756,7 +757,7 @@ class TikTok:
         async with logger(root, console=self.console, **params) as record:
             while url := self._inquire_input("作品"):
                 ids = await link_obj.run(url)
-                print(ids)
+                print("ids =", ids)
                 if not any(ids):
                     self.logger.warning(f"{url} 提取作品 ID 失败")
                     continue
@@ -838,6 +839,7 @@ class TikTok:
         detail_data = await self.extractor.run(detail_data, record, tiktok=tiktok, )
         if api:
             return detail_data
+        # print("detail_data =", detail_data)
         await self.downloader.run(detail_data, "detail", tiktok=tiktok)
         return self._get_preview_image(detail_data[0])
 
@@ -1680,8 +1682,8 @@ class TikTok:
 
     async def run(self, default_mode: list):
         self.default_mode = default_mode
-        await self.detail_interactive()
-        #await self.__detail_inquire()
+        # await self.detail_interactive()
+        await self.__detail_inquire()
         return
         while self.running:
             if not (select := safe_pop(self.default_mode)):

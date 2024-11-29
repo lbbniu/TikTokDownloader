@@ -489,6 +489,7 @@ class Parameter:
     async def set_token_params(self):
         await self.__get_token_params()
         await self.__get_token_params_tiktok()
+        print("set_token_params", self.ms_token, self.ms_token_tiktok, self.update_cookie_dy, self.update_cookie_tk)
         API.params["msToken"] = self.ms_token
         APITikTok.params["msToken"] = self.ms_token_tiktok
 
@@ -506,9 +507,11 @@ class Parameter:
         )):
             # self.cookie |= d
             self.ms_token = d[MsToken.NAME]
+            print("__get_token_params MsToken", self.ms_token)
             self.logger.info(f"抖音 MsToken 请求值: {self.ms_token}", False, )
         else:
             self.ms_token = self.cookie.get("msToken", "")
+            print("__get_token_params MsToken cookie", self.ms_token)
             self.logger.info(f"抖音 MsToken 本地值: {self.ms_token}", False, )
 
     async def __get_token_params_tiktok(self):

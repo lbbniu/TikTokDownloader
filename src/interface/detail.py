@@ -16,17 +16,14 @@ class Detail(API):
                  proxy: str = None,
                  detail_id: str = ...,
                  ):
+        print("Detail __init__", "headers = ", params.headers, "params = ", self.params)
         super().__init__(params, cookie, proxy, )
         self.detail_id = detail_id
         self.api = f"{self.domain}aweme/v1/web/aweme/detail/"
         self.text = "作品数据"
 
     def generate_params(self, ) -> dict:
-        return self.params | {
-            "aweme_id": self.detail_id,
-            "version_code": "190500",
-            "version_name": "19.5.0",
-        }
+        return {'device_platform': 'webapp', 'aid': '6383', 'channel': 'channel_pc_web', 'update_version_code': '170400', 'pc_client_type': '1', 'version_code': '190500', 'version_name': '19.5.0', 'cookie_enabled': 'true', 'screen_width': '1536', 'screen_height': '864', 'browser_language': 'zh-SG', 'browser_platform': 'Win32', 'browser_name': 'Chrome', 'browser_version': '126.0.0.0', 'browser_online': 'true', 'engine_name': 'Blink', 'engine_version': '126.0.0.0', 'os_name': 'Windows', 'os_version': '10', 'cpu_core_num': '16', 'device_memory': '8', 'platform': 'PC', 'downlink': '10', 'effective_type': '4g', 'round_trip_time': '200', 'msToken': 'eHUQHQOZgTUdIyobTzkIBOxmCGDUmm6PTJzDi2PtXcP5XHCEKVrdcCNcfE8DhShYk_1P3llPBA6BYia8HNE7HcSMdpuV_XFOURF9gbEHnwolgwUzy9j12lL1UYekBA==', 'aweme_id': '6870423037087436046'}
 
     async def run(self,
                   referer: str = None,
@@ -42,6 +39,7 @@ class Detail(API):
                   *args,
                   **kwargs,
                   ):
+        print(f"作品 {self.detail_id} 获取数据", "params", params(), "data", data())
         return await super().run(
             referer,
             single_page,

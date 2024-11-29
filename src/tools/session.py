@@ -28,6 +28,7 @@ def create_client(
         *args,
         **kwargs,
 ) -> AsyncClient:
+    print("create_client", "user_agent =", user_agent, "timeout =", timeout, "headers =", headers, "max_connections =", max_connections)
     return AsyncClient(
         headers=headers or {"User-Agent": user_agent, },
         timeout=timeout,
@@ -53,6 +54,7 @@ async def request_params(
         proxies: dict = None,
         **kwargs,
 ):
+    # print("request_params", "url =", url, "params =", params, "data =", data, "headers =", headers, "useragent =", useragent)
     with Client(
             headers=headers or {
                 "User-Agent": useragent,

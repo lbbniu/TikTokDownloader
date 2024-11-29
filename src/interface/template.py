@@ -1,3 +1,4 @@
+import json
 from time import time
 from typing import Callable
 from typing import Coroutine
@@ -72,7 +73,8 @@ class API:
             proxy: str = None,
             *args,
             **kwargs):
-        self.headers = params.headers
+        print("API __init__", "headers = ", params.headers, "params = ", self.params)
+        self.headers = {'Accept': '*/*', 'Accept-Encoding': '*/*', 'Accept-Language': 'zh-SG,zh-CN;q=0.9,zh;q=0.8', 'Referer': 'https://www.douyin.com/?recommend=1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'}
         self.log = params.logger
         self.ab = params.ab
         self.xb = params.xb
@@ -89,8 +91,10 @@ class API:
         self.finished = False
         self.text = ""
         self.set_temp_cookie(cookie)
+        
 
     def set_temp_cookie(self, cookie: str = None):
+        print("set_temp_cookie", "cookie = ", cookie)
         if cookie:
             self.headers["Cookie"] = cookie
 
@@ -114,6 +118,7 @@ class API:
                   *args,
                   **kwargs,
                   ):
+        # print("run", "referer = ", referer, "single_page = ", single_page, "data_key = ", data_key, "error_text = ", error_text, "cursor = ", cursor, "has_more = ", has_more, "params = ", params(), "data = ", data(), "method = ", method, "headers = ", headers, "args = ", args, "kwargs = ", kwargs)
         self.set_referer(referer)
         match single_page:
             case True:
@@ -158,6 +163,7 @@ class API:
                          *args,
                          **kwargs,
                          ):
+        print("run_single", "params = ", self.generate_params(), "data = ", self.generate_data(), "method = ", method, "headers = ", headers, "data_key = ", data_key, "error_text = ", error_text, "cursor = ", cursor, "has_more = ", has_more)
         if data := await self.request_data(
                 self.api,
                 params=params() or self.generate_params(),
@@ -166,6 +172,8 @@ class API:
                 headers=headers,
                 finished=True,
         ):
+            # print("data = ", data)
+            # print("json_data = ", json.dumps(data))
             self.check_response(
                 data,
                 data_key,
@@ -245,7 +253,12 @@ class API:
                            *args,
                            **kwargs,
                            ):
+        params  = {'device_platform': 'webapp', 'aid': '6383', 'channel': 'channel_pc_web', 'update_version_code': '170400', 'pc_client_type': '1', 'version_code': '190500', 'version_name': '19.5.0', 'cookie_enabled': 'true', 'screen_width': '1536', 'screen_height': '864', 'browser_language': 'zh-SG', 'browser_platform': 'Win32', 'browser_name': 'Chrome', 'browser_version': '126.0.0.0', 'browser_online': 'true', 'engine_name': 'Blink', 'engine_version': '126.0.0.0', 'os_name': 'Windows', 'os_version': '10', 'cpu_core_num': '16', 'device_memory': '8', 'platform': 'PC', 'downlink': '10', 'effective_type': '4g', 'round_trip_time': '200', 'msToken': 'eHUQHQOZgTUdIyobTzkIBOxmCGDUmm6PTJzDi2PtXcP5XHCEKVrdcCNcfE8DhShYk_1P3llPBA6BYia8HNE7HcSMdpuV_XFOURF9gbEHnwolgwUzy9j12lL1UYekBA==', 'aweme_id': '6870423037087436046'}
+        headers = {'Accept': '*/*', 'Accept-Encoding': '*/*', 'Accept-Language': 'zh-SG,zh-CN;q=0.9,zh;q=0.8', 'Referer': 'https://www.douyin.com/?recommend=1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'}
+        print("request_data", "url = ", url, "params = ", params, "data = ", data, "method = ", method, "headers = ", headers, "self.headers = ", self.headers, "encryption = ", encryption)
+        # todo: 重点关注这里的逻辑，计算 a_bogus
         self.deal_url_params(params, encryption, )
+        print("request_data -> deal_url_params", "url = ", url, "params = ", params, "data = ", data, "method = ", method, "headers = ", headers, "self.headers = ", self.headers, "encryption = ", encryption)
         match method:
             case "GET":
                 return await self.__request_data_get(url, params, headers or self.headers,
@@ -267,6 +280,7 @@ class API:
                                  ):
         # TODO: 临时代理未生效
         self.__record_request_messages(url, params, None, headers, **kwargs, )
+        print("__request_data_get", "url = ", url, "params = ", params, "headers = ", headers, "cookies = ", headers.get("Cookie"), self.client.cookies)
         response = await self.client.get(url, params=params, headers=headers, **kwargs)
         return await self.__return_response(response)
 

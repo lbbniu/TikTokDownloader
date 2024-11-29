@@ -139,6 +139,7 @@ class ABogus:
             start_time=0,
             end_time=0,
     ) -> str:
+        print("url_params = ", url_params)
         a = self.generate_string_2_list(
             url_params,
             method,
@@ -565,14 +566,25 @@ class ABogus:
                   random_num_2=None,
                   random_num_3=None,
                   ) -> str:
+        print("----------------------------------------------------------------------------------------")
+        print("get_value", "url_params =", url_params, "method =", method, "start_time =", start_time, "end_time =", end_time)
         string_1 = self.generate_string_1(
             random_num_1,
             random_num_2,
             random_num_3,
         )
+        
         string_2 = self.generate_string_2(urlencode(url_params, quote_via=quote) if isinstance(
             url_params, dict) else url_params, method, start_time, end_time, )
         string = string_1 + string_2
         # return self.generate_result(
         #     string, "s4") + self.generate_result_end(string, "s4")
+        print("----------------------------------------------------------------------------------------")
         return self.generate_result(string, "s4")
+
+
+if __name__ == "__main__":
+    bogus = ABogus()
+    url_params = {'device_platform': 'webapp', 'aid': '6383', 'channel': 'channel_pc_web', 'update_version_code': '170400', 'pc_client_type': '1', 'version_code': '190500', 'version_name': '19.5.0', 'cookie_enabled': 'true', 'screen_width': '1536', 'screen_height': '864', 'browser_language': 'zh-SG', 'browser_platform': 'Win32', 'browser_name': 'Chrome', 'browser_version': '126.0.0.0', 'browser_online': 'true', 'engine_name': 'Blink', 'engine_version': '126.0.0.0', 'os_name': 'Windows', 'os_version': '10', 'cpu_core_num': '16', 'device_memory': '8', 'platform': 'PC', 'downlink': '10', 'effective_type': '4g', 'round_trip_time': '200', 'msToken': 'eHUQHQOZgTUdIyobTzkIBOxmCGDUmm6PTJzDi2PtXcP5XHCEKVrdcCNcfE8DhShYk_1P3llPBA6BYia8HNE7HcSMdpuV_XFOURF9gbEHnwolgwUzy9j12lL1UYekBA==', 'aweme_id': '6870423037087436046'}
+    ab = bogus.get_value(url_params, "GET", 0, 0, 1, 1,1)
+    print(ab)
